@@ -1,0 +1,104 @@
+using System;
+using System.Collections.Generic;
+
+namespace Project_LinkedList
+{
+    class DLLNode
+    {
+        public Object element;
+        public DLLNode Flink;
+        public DLLNode Blink;
+        public DLLNode (Object item)
+        {
+            Flink = null;
+            Blink = null;
+            element = item;
+
+        }
+        public DLLNode()
+        {
+            Flink = null;
+            Blink = null;
+            element = null;
+        }
+    }
+    class DoublyLinkedList
+    {
+        
+        DLLNode header;
+        public DoublyLinkedList()
+        {
+            header = new DLLNode("Header");
+        }
+        public DLLNode Find(Object item)
+        {
+            DLLNode current = header;
+            while (!current.element.Equals(item))
+                current = current.Flink;
+            return current;
+        }   //checked
+        public void InsertBefore(Object item, Object current)
+        {
+            DLLNode after = Find(current);
+            DLLNode newnode = new DLLNode(item);
+            Object beforeelement = after.Blink.element;
+            DLLNode before = Find(beforeelement);
+            newnode.Flink = after;
+            newnode.Blink = before;
+            before.Flink = newnode;
+            after.Blink = newnode;
+        }   //checked
+        public DLLNode FindLast()
+        {
+            DLLNode current = header;
+            while (current.Flink!=null)
+                current = current.Flink;    
+            return current;
+        }   //checked
+        
+        public void InsertLast( Object item)
+        {
+            DLLNode last = FindLast();
+            DLLNode newnode = new DLLNode(item);
+            newnode.Blink = last;
+            last.Flink = newnode;
+        }//checked
+        public void Remove (Object item)
+        {
+            DLLNode current = Find(item);
+            if (current.Flink!=null)
+            {
+                current.Blink.Flink = current.Flink;
+                current.Flink.Blink = current.Blink;
+                current.Flink = null;
+                current.Blink = null; 
+            }
+        }
+        public void Traverse()
+        {
+            DLLNode current = header;
+            while (current.Flink!=null)
+            {
+                Console.Write(current.element+" ");
+                current = current.Flink;
+            }
+            Console.Write(current.element);
+        }//checked
+       
+    }
+    class Driver
+    {
+        static void Main()
+        {
+            DoublyLinkedList dll = new DoublyLinkedList();
+            dll.InsertLast(1);
+            dll.InsertLast(2);
+            
+            dll.InsertBefore(1.5,2);
+            dll.Traverse();
+            dll.Remove(1.5);
+            dll.Traverse();
+
+        }
+    }
+}
